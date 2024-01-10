@@ -1,0 +1,20 @@
+{
+    "name": "PatreonComments",
+    "description": "Makes patreon post comments usable by loading more data",
+    "manifest_version": 2,
+    "version": "1.0",
+    "permissions": [
+        "webRequest",
+        "webRequestBlocking",
+        "activeTab"
+    ],
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "content_scripts": [
+        {
+            "js": ["content.js"],
+            "matches": ["*://*.patreon.com/posts/*"]
+        }
+    ]
+}
