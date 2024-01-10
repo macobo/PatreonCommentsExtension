@@ -8,21 +8,37 @@ function isElementInViewport(element) {
     )
 }
 
-function clickButtonsContaining(textContent) {
-    Array.from(document.querySelectorAll('button'))
-        .filter(el => el.textContent === textContent)
-        .filter(isElementInViewport)
-        .forEach(el => {
-            console.log('Clicking', el)
-            el.style.opacity = 0.5
-            el.textContent = 'Loading...'
-            el.click()
+function clickButtonsContaining(textContent, filterBy, onClick) {
+    let matches = Array.from(document.querySelectorAll('button'))
+        .filter((element) => element.textContent === textContent)
 
-            el.disabled = true
-        })
+    if (filterBy) {
+        matches = matches.filter(filterBy)
+    }
+
+    if (matches.length > 0) {
+        console.log('Clicking all containing', { textContent, matches, commentsLoaded: document.querySelectorAll("[data-tag='comment-body']").length })
+    }
+
+    matches.forEach((element) => {
+        element.click()
+        onClick && onClick(element)
+    })
 }
 
-function debouncedClickLoadComments(frequencyMs) {
+function clickLoadReplies() {
+    clickButtonsContaining('Load replies', isElementInViewport, (element) => {
+        element.style.opacity = 0.5
+        element.textContent = 'Loading...'
+        element.disabled = true
+    })
+}
+
+function clickLoadTopLevelComments() {
+    clickButtonsContaining('Load more comments', (element) => element.getAttribute("aria-disabled") == "false")
+}
+
+function debounced(frequencyMs, fn) {
     let timeout
 
     return () => {
@@ -30,11 +46,20 @@ function debouncedClickLoadComments(frequencyMs) {
             timeout = setTimeout(() => {
                 timeout = null
 
-                clickButtonsContaining('Load replies')
+                fn()
             }, frequencyMs)
         }
     }
 }
 
-window.addEventListener('scroll', debouncedClickLoadComments(50), false);
-window.setInterval(debouncedClickLoadComments(0), 1000)
+window.addEventListener('scroll', debounced(50, clickLoadReplies), false)
+window.setInterval(clickLoadReplies, 1000)
+
+const loadAllButton = document.createElement("button")
+loadAllButton.textContent = "Load all comments"
+loadAllButton.addEventListener("click", () => {
+    window.setInterval(clickLoadTopLevelComments, 50)
+})
+
+// Append the button to the container
+document.querySelector("[data-tag='content-card-comment-thread-container']").prepend(loadAllButton)
