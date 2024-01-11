@@ -60,15 +60,15 @@ window.setInterval(clickLoadReplies, 1000)
 const loadAllButton = document.createElement("button")
 loadAllButton.textContent = "Load all comments"
 loadAllButton.style.cssText = `
-    float: right;
-    color: var(--global-primary-action-default);
-    font-weight: bold;
-    margin-bottom: 10px;
     background: none;
     border: none;
-    padding: 0;
-    position: relative;
+    color: var(--global-primary-action-default);
     font-size: var(--global-fontSizes-body-md);
+    font-weight: bold;
+    padding: 0;
+    margin-bottom: 10px;
+    position: relative;
+    float: right;
 `
 
 loadAllButton.addEventListener("click", () => {
