@@ -9,7 +9,7 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
         return { redirectUrl: url.toString() }
     },
     {
-        urls: ["*://www.patreon.com/api/posts/*"]
+        urls: ["*://*.patreon.com/api/posts/*"]
     },
     ["blocking"]
 );
