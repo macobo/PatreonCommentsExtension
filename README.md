@@ -3,7 +3,7 @@
 *Patreon Comments Extension* is a Google Chrome extension that improves Patreon's web UI by:
 
 - Loading more (100) comments under a post at a time 
-- Providing an option to Load all comments for a given post
+- Providing an option to load all comments for a given post
 - Automatically expanding comment replies
 
 ## Installation Instructions
