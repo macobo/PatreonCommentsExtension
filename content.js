@@ -1,4 +1,6 @@
-// This script clicks load more buttons when it's time
+// This script is responsible for:
+// 1. Automatically clicking 'Load replies' whenever the button is in viewport
+// 2. Creating a 'Load all replies' button.
 
 function isElementInViewport(element) {
     var rect = element.getBoundingClientRect()
@@ -57,9 +59,20 @@ window.setInterval(clickLoadReplies, 1000)
 
 const loadAllButton = document.createElement("button")
 loadAllButton.textContent = "Load all comments"
+loadAllButton.style.cssText = `
+    float: right;
+    color: var(--global-primary-action-default);
+    font-weight: bold;
+    margin-bottom: 10px;
+    background: none;
+    border: none;
+    padding: 0;
+    position: relative;
+    font-size: var(--global-fontSizes-body-md);
+`
+
 loadAllButton.addEventListener("click", () => {
     window.setInterval(clickLoadTopLevelComments, 50)
+    loadAllButton.style.display = 'none'
 })
-
-// Append the button to the container
 document.querySelector("[data-tag='content-card-comment-thread-container']").prepend(loadAllButton)
