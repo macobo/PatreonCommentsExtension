@@ -1,6 +1,7 @@
 // This script is responsible for:
 // 1. Automatically clicking 'Load replies' whenever the button is in viewport
 // 2. Creating a 'Load all replies' button.
+// 3. Disabling author buttons to avoid misclicks.
 
 function isElementInViewport(element) {
     var rect = element.getBoundingClientRect()
@@ -76,3 +77,11 @@ loadAllButton.addEventListener("click", () => {
     loadAllButton.style.display = 'none'
 })
 document.querySelector("[data-tag='content-card-comment-thread-container']").prepend(loadAllButton)
+
+const styleSheet = document.createElement("style")
+styleSheet.innerText = `
+button[data-tag='commenter-name'] {
+    pointer-events: none;
+}
+`
+document.head.appendChild(styleSheet)
